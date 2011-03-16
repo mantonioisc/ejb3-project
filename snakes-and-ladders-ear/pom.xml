@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>ejb3-project</artifactId>
+		<groupId>examples</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>examples</groupId>
+	<artifactId>snakes-and-ladders-ear</artifactId>
+	<version>${project.parent.version}</version>
+	<packaging>ear</packaging>
+
+	<name>snakes-and-ladders-ear EAR</name>
+
+	<description>
+		EAR file that contains a Snake &amp; Ladders game simulator, implemented as EJB3 and ready to be deployed with this EAR
+	</description>
+
+	<properties>
+		
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>examples</groupId>
+			<artifactId>board-generator-ejb</artifactId>
+			<version>${project.parent.version}</version>
+			<type>ejb</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>examples</groupId>
+			<artifactId>snakes-and-ladders-ejb</artifactId>
+			<version>${project.parent.version}</version>
+			<type>ejb</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>examples</groupId>
+			<artifactId>dice-ejb</artifactId>
+			<version>${project.parent.version}</version>
+			<type>ejb</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.4.2</version>
+				<configuration>
+					<version>6</version>
+					<!-- <defaultLibBundleDir>lib</defaultLibBundleDir> -->
+					<modules>
+						<ejbModule>
+							<groupId>examples</groupId>
+							<artifactId>board-generator-ejb</artifactId>
+						</ejbModule>
+						<ejbModule>
+							<groupId>examples</groupId>
+							<artifactId>snakes-and-ladders-ejb</artifactId>
+						</ejbModule>
+						<ejbModule>
+							<groupId>examples</groupId>
+							<artifactId>dice-ejb</artifactId>
+						</ejbModule>
+					</modules>
+				</configuration>
+			</plugin>
+		</plugins>
+		<finalName>snakes-and-ladders-ear</finalName>
+	</build>
+
+</project>
