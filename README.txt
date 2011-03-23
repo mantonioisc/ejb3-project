@@ -43,3 +43,12 @@ unit test.
 Many test containers were configured using maven profiles(default open-ejb) as explained on:
 http://docs.jboss.org/arquillian/reference/latest/en-US/html_single/ section 9
 
+-------------------------------------------------------------------------------------------------------------------------------------------
+Imported into SVN repository with
+	svn import ejb3-project svn://localhost/ejb3-project
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+Added a project for domain classes, as a simple jar, imported by other sub-projects that needs those types.
+
+Also the scope of openejb-core changed to provided to avoid the dependencies of OpenEJB end in the ear file. Either way the tests runs in a 
+embed OpenEJB.
