@@ -2,6 +2,7 @@ package examples.domain;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 
 public interface Board extends Serializable{
 
@@ -9,12 +10,12 @@ public interface Board extends Serializable{
 	 * Return snakes locations
 	 * @return unmodifiable map
 	 */
-	public abstract Map<Integer, Integer> getSnakes();
+	public abstract Set<SnakeElement> getSnakes();
 	/**
 	 * Return ladders location
 	 * @return unmodifiable map
 	 */
-	public abstract Map<Integer, Integer> getLadders();
+	public abstract Set<LadderElement> getLadders();
 
 	/**
 	 * Returns the board size
@@ -34,6 +35,11 @@ public interface Board extends Serializable{
 	 * debugging purposes
 	 */
 	public abstract void drawStatics();
+	
+	/**
+	 * Prints board information, for debugging purposes
+	 */
+	public abstract void describeBoard();
 	
 	/**
 	 * Sets a player location in the board. Does nothing if game has finished.

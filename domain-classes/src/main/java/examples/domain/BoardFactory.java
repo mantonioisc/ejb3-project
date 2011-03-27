@@ -2,8 +2,10 @@ package examples.domain;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
@@ -46,24 +48,24 @@ public class BoardFactory {
 		Random random = new Random();
 		//add snakes
 		log.debug("Adding random snakes #" + snakes);
-		Map<Integer, Integer> randomSnakes = new HashMap<Integer, Integer>();
+		Set<SnakeElement> randomSnakes = new HashSet<SnakeElement>();
 		board.setSnakes(randomSnakes);
 		
 		for(int i = 0 ; i < snakes ; i++){
 			int tail = random.nextInt(size) + 1;
 			int head = random.nextInt(size) + 1;
-			randomSnakes.put(tail, head);
+			randomSnakes.add(new SnakeElement(tail, head));
 		}
 		
 		//add ladders
 		log.debug("Adding random ladders #" + ladders);
-		Map<Integer, Integer> randomLadders = new HashMap<Integer, Integer>();
+		Set<LadderElement> randomLadders = new HashSet<LadderElement>();
 		board.setLadders(randomLadders);
 		
 		for(int i = 0 ; i < ladders ; i++){
 			int bottom = random.nextInt(size) + 1;
 			int top = random.nextInt(size) + 1;
-			randomLadders.put(bottom, top);
+			randomLadders.add(new LadderElement(bottom, top));
 		}
 		
 		return board;
@@ -94,17 +96,15 @@ public class BoardFactory {
 		private static final Log log = LogFactory.getLog(BoardImpl.class);
 		
 		/**
-		 * Maps the beginning and end of a snake. The
-		 * key is the tail of the snake, and the value
-		 * the head. The <b>tail &gt; head</b>
+		 * Represents the snakes elements of the board.
+		 *  The <b>tail &gt; head</b>
 		 */
-		private Map<Integer, Integer> snakes;
+		private Set<SnakeElement> snakes;
 		/**
-		 * Maps the beginning and end of a ladder.
-		 * The key is the bottom of the ladder and
-		 * the value the top. The <b>bottom &lt; top</b>
+		 * Represents the ladder elements of the board.
+		 * The <b>bottom &lt; top</b>
 		 */
-		private Map<Integer, Integer> ladders;
+		private Set<LadderElement> ladders;
 		/**
 		 * The size of the board. The board starts with 1
 		 */
@@ -120,19 +120,19 @@ public class BoardFactory {
 			//the snakes & ladders map created and placed externally
 		}
 
-		public Map<Integer, Integer> getSnakes() {
-			return Collections.unmodifiableMap(snakes);
+		public Set<SnakeElement> getSnakes() {
+			return Collections.unmodifiableSet(snakes);
 		}
 		
-		public void setSnakes(Map<Integer, Integer> snakes) {
+		public void setSnakes(Set<SnakeElement> snakes) {
 			this.snakes = snakes;
 		}
 		
-		public Map<Integer, Integer> getLadders() {
-			return Collections.unmodifiableMap(ladders);
+		public Set<LadderElement> getLadders() {
+			return Collections.unmodifiableSet(ladders);
 		}
 		
-		public void setLadders(Map<Integer, Integer> ladders) {
+		public void setLadders(Set<LadderElement> ladders) {
 			this.ladders = ladders;
 		}
 		
@@ -213,7 +213,31 @@ public class BoardFactory {
 				i = i + 1;
 			}
 			
+			log.debug(sb.toString());
+		}
+		
+
+		@Override
+		public void describeBoard() {
+			StringBuilder sb = new StringBuilder();
 			
+			sb.append("Board size: ").append(getSize()).append("\n\n");
+			
+			sb.append("Snakes: ").append(snakes.size()).append("\n");
+			
+			for(SnakeElement snake : snakes){
+				sb.append("\t").append(snake).append("\n");
+			}
+			
+			sb.append("\n\n");
+			
+			sb.append("Ladders: ").append(ladders.size()).append("\n");
+			
+			for(LadderElement ladder : ladders){
+				sb.append("\t").append(ladder).append("\n");
+			}
+			
+			log.debug(sb.toString());
 		}
 
 		@Override
