@@ -5,12 +5,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.PropertyConfigurator;
 import org.easymock.EasyMock;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BoardValidatorTest {
+	private static final Log log = LogFactory.getLog(BoardValidatorTest.class);
+	
 	private BoardValidator boardValidator = new BoardValidator();
 	
 	private Board validBoard = new Board() {
@@ -172,4 +177,41 @@ public class BoardValidatorTest {
 		
 		boardValidator.validateBoard(mockBoard);
 	}
+	
+	/**
+	 * Method that shows the basic cycle of a board creation. Were we attempt many times
+	 * to create the board until a valid one is created. Be aware that this process can
+	 * take quite some time depending on the configuration of the wanted board. The default
+	 * takes short, but if some unreal values are chosen the process could hang. You can't
+	 * expect to hold to many snakes and ladders in a small board, just doesn't make sense.
+	 * <br>
+	 * That's why it's annotated with {@link Ignore} because it is a random process and it
+	 * can take long
+	 */
+	@Ignore
+	@Test
+	public void testBoardCreationAndValidation(){
+		long start = System.currentTimeMillis();
+		
+		BoardFactory boardFactory = new BoardFactory();
+		
+		boolean isValid = false;
+		
+		int attempts = 1;
+		
+		while(!isValid){
+			Board board = boardFactory.createBoard();
+			
+			try{
+				boardValidator.validateBoard(board);
+				log.debug("SUCESS, board created after attemp #" + attempts);
+				isValid = true;
+			}catch(IllegalStateException e){
+				log.debug("Attempt failed #" + attempts++);
+			}
+		}
+		
+		log.debug("Time taken to generate a valid board= " + (System.currentTimeMillis() - start));
+	}
+	
 }
