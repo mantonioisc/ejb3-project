@@ -48,7 +48,7 @@ public class BoardValidator {
 			log.debug("Validation passed for board");
 			board.describeBoard();
 		}catch(IllegalStateException e){
-			log.debug("Validation failed for board", e);
+			log.debug("Validation failed for board: " + e.getMessage());
 			throw e;
 		}
 	}

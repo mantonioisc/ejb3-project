@@ -54,7 +54,7 @@ public class BoardFactory {
 		for(int i = 0 ; i < snakes ; i++){
 			int tail = random.nextInt(size) + 1;
 			int head = random.nextInt(size) + 1;
-			randomSnakes.add(new SnakeElement(tail, head));
+			randomSnakes.add(new SnakeElement(Math.max(tail, head), Math.min(tail, head)));
 		}
 		
 		//add ladders
@@ -65,7 +65,7 @@ public class BoardFactory {
 		for(int i = 0 ; i < ladders ; i++){
 			int bottom = random.nextInt(size) + 1;
 			int top = random.nextInt(size) + 1;
-			randomLadders.add(new LadderElement(bottom, top));
+			randomLadders.add(new LadderElement(Math.min(bottom, top), Math.max(bottom, top)));
 		}
 		
 		return board;

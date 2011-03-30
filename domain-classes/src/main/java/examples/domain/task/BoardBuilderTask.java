@@ -52,7 +52,7 @@ public class BoardBuilderTask implements Callable<Board> {
 		long attempts = 1;
 		long start = System.currentTimeMillis();
 		
-		while(!isValid && checkCancelStatus()){
+		while(!isValid && !checkCancelStatus()){
 			board = buildBoard();
 			
 			try{
@@ -71,8 +71,8 @@ public class BoardBuilderTask implements Callable<Board> {
 	}
 	
 	private boolean checkCancelStatus(){
-		boolean cancel = !Thread.currentThread().isInterrupted();
-		log.debug("!!! Task is canceled");
+		boolean cancel = Thread.currentThread().isInterrupted();
+		if(cancel) log.debug("!!! Task is canceled");
 		return cancel;
 	}
 	
