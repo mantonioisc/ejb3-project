@@ -109,14 +109,8 @@ public class BoardFactory {
 		 * The size of the board. The board starts with 1
 		 */
 		private int size;
-		/**
-		 * Saves the location of a players chip within the
-		 * table. 
-		 */
-		private Map<ChipColor, Integer> places;
 		
 		public BoardImpl() {
-			places = new HashMap<ChipColor, Integer>();
 			//the snakes & ladders map created and placed externally
 		}
 
@@ -143,10 +137,6 @@ public class BoardFactory {
 		public void setSize(int size) {
 			this.size = size;
 		}	
-		
-		public Map<ChipColor, Integer> getPlaces() {
-			return Collections.unmodifiableMap(places);
-		}
 		
 		@Override
 		public int hashCode() {
@@ -187,36 +177,7 @@ public class BoardFactory {
 			return "Board [snakes=" + snakes + ", ladders=" + ladders + ", size="
 					+ size + "]";
 		}
-
-		@Override
-		public void drawStatics() {
-			StringBuilder sb = new StringBuilder();
-			
-			sb.append("RANK").append("\t-\t").append("PLAYER").append("\t-\t").append("PLACE");
-			
-			TreeMap<ChipColor, Integer> orderedPlaces = 
-				new TreeMap<ChipColor, Integer>(new Comparator<ChipColor>() {
-
-					Map<ChipColor, Integer> unorderedMap = places;
-					@Override
-					public int compare(ChipColor player1, ChipColor palyer2) {
-						int place1 = unorderedMap.get(player1);
-						int place2 = unorderedMap.get(palyer2);
-						return place1 - place2;
-					}
-					
-				});
-			
-			int i = 1;
-			for(Map.Entry<ChipColor, Integer> entry:orderedPlaces.entrySet()){
-				sb.append(i).append("\t-\t").append(entry.getKey()).append("\t-\t").append(entry.getValue());
-				i = i + 1;
-			}
-			
-			log.debug(sb.toString());
-		}
 		
-
 		@Override
 		public void describeBoard() {
 			StringBuilder sb = new StringBuilder();
@@ -240,39 +201,7 @@ public class BoardFactory {
 			log.debug(sb.toString());
 		}
 
-		@Override
-		public void setChipLocation(ChipColor chip, int location)
-				throws IllegalArgumentException {
-			if(location < 1 || location > size){
-				log.debug("Invalid location: " + location);
-				throw new IllegalArgumentException("Invalid location: " + location);
-			}
-			
-			if(isGameFinished()){
-				log.debug("The game is already finished. Ignoring move");
-			}else{
-				if(places.containsKey(chip)){
-					log.debug("Previous location for chip(" + chip + "): " + places.get(chip));
-				}
-				
-				log.debug("New location for chip(" + chip + "): " + places.get(chip));
-				places.put(chip, location);
-			}
-			
-		}
-
-		@Override
-		public boolean isGameFinished() {
-			boolean result = false;
-			for(Map.Entry<ChipColor, Integer> place:places.entrySet()){
-				if(place.getValue().equals(this.size)){
-					result = true;
-					break;
-				}
-			}
-			return result;
-		}
 		
-	}
+	}//end BoardImpl
 
 }

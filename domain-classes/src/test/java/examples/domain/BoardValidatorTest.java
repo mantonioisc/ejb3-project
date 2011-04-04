@@ -25,17 +25,6 @@ public class BoardValidatorTest {
 		
 		private Set<SnakeElement> snakes = Collections.singleton(new SnakeElement(10, 5));
 		private Set<LadderElement> ladders = Collections.singleton(new LadderElement(20, 25));
-
-		@Override
-		public void setChipLocation(ChipColor chip, int location)
-				throws IllegalArgumentException {
-			
-		}
-		
-		@Override
-		public boolean isGameFinished() {
-			return false;
-		}
 		
 		@Override
 		public Set<SnakeElement> getSnakes() {
@@ -48,18 +37,8 @@ public class BoardValidatorTest {
 		}
 		
 		@Override
-		public Map<ChipColor, Integer> getPlaces() {
-			return null;
-		}
-		
-		@Override
 		public Set<LadderElement> getLadders() {
 			return ladders;
-		}
-		
-		@Override
-		public void drawStatics() {
-			System.out.println("Test board");
 		}
 		
 		@Override
