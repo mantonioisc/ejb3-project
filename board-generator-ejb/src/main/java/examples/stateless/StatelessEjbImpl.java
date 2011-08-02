@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 @Stateless
 @LocalBean
 public class StatelessEjbImpl implements StatelessEjb {
-	Log log = LogFactory.getLog(StatelessEjbImpl.class);
+	private static final Log log = LogFactory.getLog(StatelessEjbImpl.class);
 	/* (non-Javadoc)
 	 * @see examples.stateless.StatelessEjb#doIt()
 	 */

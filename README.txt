@@ -7,6 +7,8 @@ Generated using maven archetype plugin
 -------------------------------------------------------------------------------------------------------------------------------------------	
 ejb3-project
 	Parent project with common dependencies
+domain-classes
+	common classes imported by the example EJBs
 board-generator-ejb
 	Stateles Session Bean example
 snakes-and-ladders-ejb

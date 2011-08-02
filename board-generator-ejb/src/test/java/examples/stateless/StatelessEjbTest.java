@@ -21,7 +21,7 @@ public class StatelessEjbTest {
 	private static final Log log = LogFactory.getLog(StatelessEjbTest.class);
 	
 	@EJB
-	StatelessEjb statelessEjb;
+	private StatelessEjb statelessEjb;
 	
 	@BeforeClass
 	public static void setUp(){

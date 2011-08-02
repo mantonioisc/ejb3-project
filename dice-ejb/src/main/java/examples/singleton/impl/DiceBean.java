@@ -42,6 +42,7 @@ public class DiceBean implements DiceLocal, DiceRemote {
 	public int throwTwoDices() {
 		int value = random.nextInt(DICE_FACES) + random.nextInt(DICE_FACES);
 		value++;
+		value++;
 		log.debug("throwTwoDices()=" + value);
 		return value;
 	}

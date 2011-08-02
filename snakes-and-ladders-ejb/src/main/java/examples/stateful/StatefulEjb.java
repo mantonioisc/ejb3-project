@@ -1,10 +1,7 @@
 package examples.stateful;
 
-import javax.ejb.Stateful;
 
-@Stateful
-public class StatefulEjb {
-	public void doIT(){
-		
-	}
+public interface StatefulEjb {
+	void doIT();
+	void close();
 }

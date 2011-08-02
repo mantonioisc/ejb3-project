@@ -7,12 +7,12 @@
 	<packaging>pom</packaging>
 	<name>ejb3-project</name>
 	<modules>
+		<module>domain-classes</module>
 		<module>board-generator-ejb</module>
 		<module>snakes-and-ladders-ejb</module>
 		<module>dice-ejb</module>
 		<module>snakes-and-ladders-ear</module>
-    	<module>domain-classes</module>
-  </modules>
+  	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
