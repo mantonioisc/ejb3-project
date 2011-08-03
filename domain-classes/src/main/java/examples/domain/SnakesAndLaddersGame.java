@@ -22,7 +22,8 @@ public class SnakesAndLaddersGame {
 	 * table. 
 	 */
 	private Map<ChipColor, Integer> places;
-	
+	//TODO change the map from chip to player
+	//TODO double index by place, list of player
 	private List<Player> players;
 	
 	public SnakesAndLaddersGame(Board board, List<Player> players) {
@@ -63,9 +64,9 @@ public class SnakesAndLaddersGame {
 
 				Map<ChipColor, Integer> unorderedMap = places;
 				@Override
-				public int compare(ChipColor player1, ChipColor palyer2) {
+				public int compare(ChipColor player1, ChipColor player2) {
 					int place1 = unorderedMap.get(player1);
-					int place2 = unorderedMap.get(palyer2);
+					int place2 = unorderedMap.get(player2);
 					return place2 - place1;
 				}
 				
@@ -106,9 +107,44 @@ public class SnakesAndLaddersGame {
 			}
 			
 			places.put(chip, location);
+			//take in count the snakes & ladders
+			int effect = checkSnakeAndLadder(location, board);
+			if(effect != 0){
+				log.debug("effect on chip location: " + effect);
+				places.put(chip, location + effect);
+			}
+
 			log.debug("New location for chip(" + chip + "): " + places.get(chip));
 		}
 		
+	}
+
+	/**
+	 * Checks the board for snakes and ladder definitions and get the net
+	 * effect on chip location
+	 * @param location the current location to check
+	 * @param board to get a reference to the snakes and ladders
+	 * @return the negative/positive effect on the table
+	 */
+	private int checkSnakeAndLadder(int location, Board board) {
+		int effect = 0;
+
+		for (SnakeElement snakeElement : board.getSnakes()) {
+			if(snakeElement.getTail() == location){
+				log.debug("Snake is taking place, going down to: " + snakeElement.getHead());
+				effect = snakeElement.getHead() - snakeElement.getTail();//where I am minus where I used to be
+				return effect;
+			}
+		}
+
+		for (LadderElement ladderElement : board.getLadders()) {
+			if(ladderElement.getBottom() == location){
+				log.debug("Ladder is taking effect, going up to: " + ladderElement.getTop());
+				effect = ladderElement.getTop() - ladderElement.getBottom();
+			}
+		}
+		
+		return effect;
 	}
 
 	/**
@@ -126,5 +162,16 @@ public class SnakesAndLaddersGame {
 		return result;
 	}
 	
+	public ChipColor getChipAt(int index){
+		ChipColor chip = null;
+		
+		for(Map.Entry<ChipColor, Integer> place:places.entrySet()){
+			if(place.getValue().equals(index)){
+				chip = place.getKey();
+				break;
+			}
+		}
+		return chip;
+	}
 	
 }

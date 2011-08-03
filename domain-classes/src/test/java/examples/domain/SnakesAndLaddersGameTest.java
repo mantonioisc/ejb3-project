@@ -1,23 +1,26 @@
 package examples.domain;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-
+import examples.domain.task.BoardBuilderTask;
 import org.apache.log4j.PropertyConfigurator;
+import org.easymock.EasyMock;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import examples.domain.task.BoardBuilderTask;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
+import static org.junit.Assert.*;
+
+/**
+ * 
+ * @version 2 modified to test snake & ladder effect on game
+ * also {@link #testSetChipLocation()} modified to take into account this effect
+ */
 public class SnakesAndLaddersGameTest {
 	private static Board board = null;
 	private static List<Player> players = null;
+	private static Player player1 = null;
 	
 	@BeforeClass
 	public static void setUp() throws InterruptedException, ExecutionException{
@@ -30,6 +33,7 @@ public class SnakesAndLaddersGameTest {
 			Player player = new Player("Player " + (players.size() + 1), chip);
 			players.add(player);
 		}
+		player1 = players.get(0);
 		//2nd crate a board
 		FutureTask<Board> task = new FutureTask<Board>(new BoardBuilderTask());
 		task.run();
@@ -50,13 +54,20 @@ public class SnakesAndLaddersGameTest {
 	
 	@Test
 	public void testSetChipLocation(){
-		SnakesAndLaddersGame game = new SnakesAndLaddersGame(board, players);
+		int size = 15;
+		Board mockBoard = EasyMock.createMock(Board.class);
+		EasyMock.expect(mockBoard.getSnakes()).andReturn(Collections.<SnakeElement>emptySet());//just return something empty to move through
+		EasyMock.expect(mockBoard.getLadders()).andReturn(Collections.<LadderElement>emptySet());
+		EasyMock.expect(mockBoard.getSize()).andReturn(size).anyTimes();
+		EasyMock.replay(mockBoard);
+
+		SnakesAndLaddersGame game = new SnakesAndLaddersGame(mockBoard, players);
 		
-		game.setChipLocation(players.get(0).getChip(), board.getSize()/2);
+		game.setChipLocation(player1.getChip(), mockBoard.getSize()/2);
 		
-		assertTrue(game.getPlaces().containsKey(players.get(0).getChip()));
+		assertTrue(game.getPlaces().containsKey(player1.getChip()));
 		
-		assertEquals(new Integer(board.getSize()/2), game.getPlaces().get(players.get(0).getChip()));
+		assertEquals(new Integer(mockBoard.getSize()/2), game.getPlaces().get(player1.getChip()));
 	}
 	
 	@Test(expected = UnsupportedOperationException.class)
@@ -71,7 +82,7 @@ public class SnakesAndLaddersGameTest {
 		
 		assertFalse(game.isGameFinished());
 		
-		game.setChipLocation(players.get(0).getChip(), board.getSize());
+		game.setChipLocation(player1.getChip(), board.getSize());
 		
 		assertTrue(game.isGameFinished());
 		
@@ -80,5 +91,47 @@ public class SnakesAndLaddersGameTest {
 		game.setChipLocation(players.get(1).getChip(), board.getSize());
 		
 		assertEquals(copyBefore, game.getPlaces());
+	}
+
+	@Test
+	public void testSnakeEffect() {
+		int snakeHead = 5;
+		int snakeTail = 10;
+		int size = 15;
+		Board mockBoard = EasyMock.createMock(Board.class);
+		EasyMock.expect(mockBoard.getSnakes()).andReturn(Collections.singleton(new SnakeElement(snakeTail, snakeHead))).anyTimes();
+		EasyMock.expect(mockBoard.getSize()).andReturn(size).anyTimes();
+		EasyMock.replay(mockBoard);
+
+		SnakesAndLaddersGame game = new SnakesAndLaddersGame(mockBoard, players);
+
+		game.setChipLocation(player1.getChip(), snakeTail);
+
+
+		ChipColor chipAt = game.getChipAt(snakeHead);
+
+		assertEquals(player1.getChip(), chipAt);
+	}
+
+	@Test
+	public void testLadderEffect(){
+		int ladderBottom = 5;
+		int ladderTop = 10;
+		int size = 15;
+		Board mockBoard = EasyMock.createMock(Board.class);
+		EasyMock.expect(mockBoard.getSnakes()).andReturn(Collections.<SnakeElement>emptySet());//just return something empty to move through
+		EasyMock.expect(mockBoard.getLadders()).andReturn(Collections.singleton(new LadderElement(ladderBottom, ladderTop))).anyTimes();
+		EasyMock.expect(mockBoard.getSize()).andReturn(size).anyTimes();
+		EasyMock.replay(mockBoard);
+
+		SnakesAndLaddersGame game = new SnakesAndLaddersGame(mockBoard, players);
+
+		game.setChipLocation(player1.getChip(), ladderBottom);
+
+
+		ChipColor chipAt = game.getChipAt(ladderTop);
+
+		assertEquals(player1.getChip(), chipAt);
+
 	}
 }

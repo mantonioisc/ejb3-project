@@ -24,7 +24,7 @@ import examples.domain.BoardValidator;
 public class BoardBuilderTask implements Callable<Board> {
 	private static final Log log = LogFactory.getLog(BoardBuilderTask.class);
 	
-	private static BoardFactory boardFactory = new BoardFactory();;
+	private static BoardFactory boardFactory = new BoardFactory();
 	private static BoardValidator boardValidator = new BoardValidator();
 	
 	private int size;
