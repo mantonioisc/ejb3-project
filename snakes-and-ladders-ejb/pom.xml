@@ -20,7 +20,25 @@
 	</properties>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>examples</groupId>
+			<artifactId>domain-classes</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>examples</groupId>
+			<artifactId>board-generator-ejb</artifactId>
+			<version>${project.parent.version}</version>
+			<type>ejb</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>examples</groupId>
+			<artifactId>dice-ejb</artifactId>
+			<version>${project.parent.version}</version>
+			<type>ejb</type>
+		</dependency>
 	</dependencies>
 
 	<build>

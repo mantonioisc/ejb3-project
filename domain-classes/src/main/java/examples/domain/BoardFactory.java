@@ -180,25 +180,27 @@ public class BoardFactory {
 		
 		@Override
 		public void describeBoard() {
-			StringBuilder sb = new StringBuilder();
-			
-			sb.append("Board size: ").append(getSize()).append("\n\n");
-			
-			sb.append("Snakes: ").append(snakes.size()).append("\n");
-			
-			for(SnakeElement snake : snakes){
-				sb.append("\t").append(snake).append("\n");
+			if (log.isDebugEnabled()) {
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("Board size: ").append(getSize()).append("\n\n");
+
+				sb.append("Snakes: ").append(snakes.size()).append("\n");
+
+				for(SnakeElement snake : snakes){
+					sb.append("\t").append(snake).append("\n");
+				}
+
+				sb.append("\n\n");
+
+				sb.append("Ladders: ").append(ladders.size()).append("\n");
+
+				for(LadderElement ladder : ladders){
+					sb.append("\t").append(ladder).append("\n");
+				}
+
+				log.debug(sb.toString());
 			}
-			
-			sb.append("\n\n");
-			
-			sb.append("Ladders: ").append(ladders.size()).append("\n");
-			
-			for(LadderElement ladder : ladders){
-				sb.append("\t").append(ladder).append("\n");
-			}
-			
-			log.debug(sb.toString());
 		}
 
 		
