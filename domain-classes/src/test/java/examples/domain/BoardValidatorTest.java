@@ -156,7 +156,41 @@ public class BoardValidatorTest {
 		
 		boardValidator.validateBoard(mockBoard);
 	}
-	
+
+	@Test(expected = IllegalStateException.class)
+	public void testTwoFallsInTheSameCell(){
+		Set<SnakeElement> snakes = new HashSet<SnakeElement>();
+		snakes.add(new SnakeElement(10, 5));
+		snakes.add(new SnakeElement(10, 1));
+
+		Board mockBoard = EasyMock.createMock(Board.class);
+		EasyMock.expect(mockBoard.getSize()).andDelegateTo(validBoard).anyTimes();
+		EasyMock.expect(mockBoard.getSnakes()).andReturn(snakes).anyTimes();
+		EasyMock.expect(mockBoard.getLadders()).andDelegateTo(validBoard).anyTimes();
+		mockBoard.describeBoard();
+		EasyMock.expectLastCall().anyTimes();
+		EasyMock.replay(mockBoard);
+
+		boardValidator.validateBoard(mockBoard);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void testTwoJumpsInTheSameCell(){
+		Set<LadderElement> ladders = new HashSet<LadderElement>();
+		ladders.add(new LadderElement(20, 25));
+		ladders.add(new LadderElement(20, validBoard.getSize()));
+
+		Board mockBoard = EasyMock.createMock(Board.class);
+		EasyMock.expect(mockBoard.getSize()).andDelegateTo(validBoard).anyTimes();
+		EasyMock.expect(mockBoard.getSnakes()).andDelegateTo(validBoard).anyTimes();
+		EasyMock.expect(mockBoard.getLadders()).andReturn(ladders).anyTimes();
+		mockBoard.describeBoard();
+		EasyMock.expectLastCall().anyTimes();
+		EasyMock.replay(mockBoard);
+
+		boardValidator.validateBoard(mockBoard);
+	}
+
 	/**
 	 * Method that shows the basic cycle of a board creation. Were we attempt many times
 	 * to create the board until a valid one is created. Be aware that this process can
@@ -171,16 +205,16 @@ public class BoardValidatorTest {
 	@Test
 	public void testBoardCreationAndValidation(){
 		long start = System.currentTimeMillis();
-		
+
 		BoardFactory boardFactory = new BoardFactory();
-		
+
 		boolean isValid = false;
-		
+
 		int attempts = 1;
-		
+
 		while(!isValid){
 			Board board = boardFactory.createBoard();
-			
+
 			try{
 				boardValidator.validateBoard(board);
 				log.debug("SUCESS, board created after attemp #" + attempts);
@@ -189,7 +223,7 @@ public class BoardValidatorTest {
 				log.debug("Attempt failed #" + attempts++);
 			}
 		}
-		
+
 		log.debug("Time taken to generate a valid board= " + (System.currentTimeMillis() - start));
 	}
 	

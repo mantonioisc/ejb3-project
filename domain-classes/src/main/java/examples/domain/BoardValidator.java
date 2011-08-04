@@ -23,7 +23,9 @@ import org.apache.commons.logging.LogFactory;
  * 		<li>a snake head can not be the tail of other snake: to avoid double falls</li>
  * 		<li>a ladder bottom can not be the top of other ladder: to avoid double jumps</li>
  * 
- *  	<li>a snake tail can not be in the same cell as a ladder bottom: which way will take in this case?</li>		 
+ *  	<li>a snake tail can not be in the same cell as a ladder bottom: which way will take in this case?</li>
+ *  	<li>two or more snakes can't have a tail in the same cell: which fall we will choose</li>
+ *  	<li>two or more ladders	can't have a bottom in the same cell: which jump we will choose</li>
  * 	</ol>
  * Actually having an snake head and a ladder top 
  * at the same cell doesn't cause any trouble. <br>
@@ -32,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
  * is thrown, discarding the board completely, instead 
  * of trying to fix it. That's how we attempt to create 
  * a lengthy process.
+ * @version 2.0 Added new checks for two elements and the same cell and cycles
  */
 public class BoardValidator {
 	private static final Log log = LogFactory.getLog(BoardValidator.class);
@@ -109,11 +112,29 @@ public class BoardValidator {
 		for(LadderElement ladder : board.getLadders()){
 			for(SnakeElement snake : board.getSnakes()){
 				if(ladder.getBottom() == snake.getTail()){
-					throw new IllegalStateException("We can't have the start of a snake and a ladder in the same place:" + snake + " VS " +ladder);
+					throw new IllegalStateException("We can't have the start of a snake and a ladder in the same place: " + snake + " VS " +ladder);
 				}
 			}
 		}
-		
+
+		//10th, check for two falls at the same cell
+		for (SnakeElement outerSnake : board.getSnakes()) {
+			for (SnakeElement innerSnake : board.getSnakes()) {
+				if(outerSnake != innerSnake && outerSnake.getTail() == innerSnake.getTail()) {//don't exclude itself but equality testing is not enough we need identity
+					throw new IllegalStateException("We can't have the start of two snakes in the same place: " + outerSnake + "VS" + innerSnake);
+				}
+			}
+		}
+
+		//11th, check for two jumps at the same cell
+		for (LadderElement outerLadder : board.getLadders()) {
+			for (LadderElement innerLadder : board.getLadders()) {
+				if(outerLadder != innerLadder && outerLadder.getBottom() == innerLadder.getBottom()) {
+					throw new IllegalStateException("We can't have the start of two ladders in the same place: " + outerLadder + "VS" + innerLadder);
+				}
+			}
+		}
+
 		//looks valid
 	}
 }
