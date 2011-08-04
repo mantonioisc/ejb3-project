@@ -7,7 +7,10 @@ import examples.stateless.impl.BoardGeneratorBean;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.PropertyConfigurator;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -19,11 +22,11 @@ public class SnakesAndLaddersBeanUnitTest {
 	private static final Log LOG = LogFactory.getLog(SnakesAndLaddersBeanUnitTest.class);
 
 	private static final List<String> players = new ArrayList<String>() {{
-		add("snake");
-		add("kratos");
-		add("drake");
-		add("lara");
-		add("john");
+		add("Solid Snake");
+		add("Kratos");
+		add("Nathan Drake");
+		add("Lara Croft");
+		add("John Marston");
 	}};
 
 	private static final DiceBean DICE = new DiceBean();
@@ -103,13 +106,13 @@ public class SnakesAndLaddersBeanUnitTest {
 
 		while (!snakesAndLaddersBean.isThereAWinner()) {
 			for (Player player : playerList) {
-				int location = snakesAndLaddersBean.takeTurn(player);
+				snakesAndLaddersBean.takeTurn(player);
 			}
 		}
 
 		Player winner = snakesAndLaddersBean.getWinner();
 
-		assertNull(winner);
+		assertNotNull(winner);
 
 		LOG.debug("Winner! " + winner);
 	}

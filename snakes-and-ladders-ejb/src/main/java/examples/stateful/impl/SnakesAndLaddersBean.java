@@ -80,13 +80,12 @@ public class SnakesAndLaddersBean implements SnakesAndLaddersLocal,
 	public int takeTurn(Player player) {
 		int number = dice.throwDice();
 		log.debug("Player : " + player.getName() + " got " + number);
-		Integer oldLocation = game.getPlaces().get(player.getChip());
-		if(oldLocation == null){
-			oldLocation = 0;//it's the first shot
-		}
-		//TODO rename this method and implement it, so it considers the snakes and ladders
+
+		int oldLocation = game.getChipLocation(player.getChip());
+		
 		game.setChipLocation(player.getChip(), number);
-		int newLocation = game.getPlaces().get(player.getChip());
+
+		int newLocation = game.getChipLocation(player.getChip());
 		
 		log.debug("Player " + player.getName() + " passed from " + oldLocation + " to " + newLocation);
 		

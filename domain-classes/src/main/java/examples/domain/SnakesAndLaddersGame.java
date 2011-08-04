@@ -88,36 +88,62 @@ public class SnakesAndLaddersGame {
 	/**
 	 * Sets a player location in the board. Does nothing if game has finished.
 	 * @param chip the color of the chip
-	 * @param location the place in the board to place the chip
-	 * @throws IllegalArgumentException if the location is bigger 
-	 * 		than the size or less than 1
+	 * @param diceValue the value to sum to the current place in the board to get the new place of the chip
+	 * @throws IllegalArgumentException if the diceValue is bigger
+	 * 		than 6 or less than 1
 	 */
-	public void setChipLocation(ChipColor chip, int location)
+	public void setChipLocation(ChipColor chip, int diceValue)
 			throws IllegalArgumentException {
-		if(location < 1 || location > board.getSize()){
-			log.debug("Invalid location: " + location);
-			throw new IllegalArgumentException("Invalid location: " + location);
+		if(diceValue < 1 || diceValue > 6){
+			log.debug("Invalid dice value: " + diceValue);
+			throw new IllegalArgumentException("Invalid dice value: " + diceValue);
 		}
 		
 		if(isGameFinished()){
 			log.debug("The game is already finished. Ignoring move");
 		}else{
+			int currentLocation = 0;
 			if(places.containsKey(chip)){
-				log.debug("Previous location for chip(" + chip + "): " + places.get(chip));
+				currentLocation = places.get(chip);
+			}
+			log.debug("Previous location for chip(" + chip + "): " + currentLocation);
+			log.debug("Dice value: " + diceValue);
+
+			//sum the actual place and the dice value!!! How did I forget that?
+			int newLocation = currentLocation + diceValue;
+
+			//check if the movement is bigger, then bounce from the end of the board
+			if(newLocation > getBoard().getSize()){
+				newLocation = getBoard().getSize() - (newLocation - getBoard().getSize());
+				log.debug("Bouncing back to: " + newLocation);
 			}
 			
-			places.put(chip, location);
 			//take in count the snakes & ladders
-			int effect = checkSnakeAndLadder(location, board);
+			int effect = checkSnakeAndLadder(newLocation, board);
 			if(effect != 0){
 				log.debug("effect on chip location: " + effect);
-				places.put(chip, location + effect);
+				newLocation = newLocation + effect;
 			}
+
+			places.put(chip, newLocation);
 
 			log.debug("New location for chip(" + chip + "): " + places.get(chip));
 		}
 		
 	}
+
+	/**
+	 * Gets the location of the chip where 1 is the first cell and the last is the boar size
+	 * @return 0 if the chip passed is not in the game
+	 */
+	public int getChipLocation(ChipColor chipColor){
+		Integer location = places.get(chipColor);
+		if (location == null) {
+			location = 0;
+		}
+		return location;
+	}
+
 
 	/**
 	 * Checks the board for snakes and ladder definitions and get the net

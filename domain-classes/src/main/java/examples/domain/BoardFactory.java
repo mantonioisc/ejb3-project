@@ -180,7 +180,7 @@ public class BoardFactory {
 		
 		@Override
 		public void describeBoard() {
-			if (log.isDebugEnabled()) {
+			if (log.isInfoEnabled()) {
 				StringBuilder sb = new StringBuilder();
 
 				sb.append("Board size: ").append(getSize()).append("\n\n");
@@ -199,7 +199,7 @@ public class BoardFactory {
 					sb.append("\t").append(ladder).append("\n");
 				}
 
-				log.debug(sb.toString());
+				log.info(sb.toString());
 			}
 		}
 
