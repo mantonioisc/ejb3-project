@@ -9,11 +9,11 @@
 	</parent>
 
 	<groupId>examples</groupId>
-	<artifactId>snakes-and-ladders-ear</artifactId>
+	<artifactId>game-ear</artifactId>
 	<version>${project.parent.version}</version>
 	<packaging>ear</packaging>
 
-	<name>snakes-and-ladders-ear EAR</name>
+	<name>game-ear EAR</name>
 
 	<description>
 		EAR file that contains a Snake &amp; Ladders game simulator, implemented as EJB3 and ready to be deployed with this EAR
@@ -72,7 +72,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>snakes-and-ladders-ear</finalName>
+		<finalName>game-ear</finalName>
 	</build>
 
 </project>

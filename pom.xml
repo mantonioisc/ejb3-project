@@ -11,7 +11,7 @@
 		<module>board-generator-ejb</module>
 		<module>snakes-and-ladders-ejb</module>
 		<module>dice-ejb</module>
-		<module>snakes-and-ladders-ear</module>
+		<module>game-ear</module>
   	</modules>
 
 	<properties>
