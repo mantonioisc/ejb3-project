@@ -8,6 +8,8 @@ import javax.ejb.EJB;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
 
+import examples.singleton.DiceLocal;
+import examples.stateless.BoardGeneratorLocal;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,10 +37,10 @@ public class SnakesAndLaddersBean implements SnakesAndLaddersLocal,
 	private SnakesAndLaddersGame game;
 	
 	@EJB
-	private BoardGenerator boardGenerator;
+	private BoardGeneratorLocal boardGenerator;
 	
 	@EJB
-	private Dice dice;
+	private DiceLocal dice;
 
 
 	@Override
