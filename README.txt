@@ -1,5 +1,5 @@
-Sample project to demonstrate EJB 3.1 use with Java EE 6 
-
+#Sample project to demonstrate EJB 3.1 use with Java EE 6
+Imported from SVN into git on Feb/17/2014
 -------------------------------------------------------------------------------------------------------------------------------------------
 Generated using maven archetype plugin
 	mvn archetype:generate
